@@ -8,7 +8,7 @@ export function Footer() {
               href="#accueil"
               className="font-display text-xl text-cream hover:text-bronze transition-colors"
             >
-              <span className="italic">Maxence</span> Doat
+              Sylviane <span className="italic">Le Boulc'h</span>
             </a>
             <p className="font-body text-sm mt-2">
               Artiste plasticienne · Paris

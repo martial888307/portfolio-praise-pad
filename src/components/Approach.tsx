@@ -78,7 +78,7 @@ export function Approach() {
             à sculpter le vide autant que la matière. »
           </blockquote>
           <p className="font-body text-sm uppercase tracking-widest text-bronze mt-8">
-            — Maxence Doat
+            — Sylviane Le Boulc'h
           </p>
         </div>
       </div>
