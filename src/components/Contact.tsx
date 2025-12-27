@@ -63,10 +63,10 @@ export function Contact() {
                     Email
                   </p>
                   <a
-                    href="mailto:contact@maxencedoat.com"
+                    href="mailto:sleboulch@gmail.com"
                     className="font-body text-foreground hover:text-primary transition-colors"
                   >
-                    contact@maxencedoat.com
+                    sleboulch@gmail.com
                   </a>
                 </div>
               </div>

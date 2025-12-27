@@ -18,8 +18,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Playfair Display", "Georgia", "serif"],
-        body: ["Cormorant Garamond", "Georgia", "serif"],
+        display: ["Cinzel", "Georgia", "serif"],
+        body: ["Raleway", "Helvetica Neue", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

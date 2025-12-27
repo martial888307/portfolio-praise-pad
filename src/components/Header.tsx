@@ -35,7 +35,7 @@ export function Header() {
           href="#accueil"
           className="font-display text-xl md:text-2xl font-medium tracking-wide text-foreground hover:text-primary transition-colors"
         >
-          <span className="italic">Maxence</span> Doat
+          Sylviane <span className="italic">Le Boulc'h</span>
         </a>
 
         {/* Desktop Navigation */}
