@@ -5,6 +5,10 @@ export interface ApiArtwork {
     collection_name: string;
     dateRealisation: string;
     img_url: string;
+    description?: string;
+    price?: string | number;
+    visiblePrice?: string;
+    sold?: string | number;
 }
 
 export interface GalleryData {
@@ -21,21 +25,24 @@ export async function fetchGalleryData(collectionId: string = "0", medium: strin
     // collection_id: 0 for all, or specific ID
     urlParams.append("collection_id", collectionId || "0");
 
-    // description: empty for all, or 'peinture', 'dessin', etc.
-    if (medium) {
-        urlParams.append("description", medium);
-    }
+    // description: MUST be present even if empty (as per user request: ?api&description&collection_id=0)
+    urlParams.append("description", medium || "");
 
-    // Determine base URL based on environment
     // Base URL is always relative proxy path (Dev: Vite proxy, Prod: Vercel rewrite)
     const baseUrl = "/api_sylviane";
 
-    // Start with ?api to ensure it's first if order matters, though logic above handles params
-    const queryString = urlParams.toString().replace("api=", "api"); // Handle empty value for api param if needed specifically as ?api
+    // Custom query string formatting
+    // User requested format: "?api&description&collection_id=0"
+    // Standard URLSearchParams gives "api=&description="
+    // We strictly replace "key=" with "key" for api and description (if empty)
+    let queryString = urlParams.toString();
+    queryString = queryString.replace("api=", "api");
 
-    // Ideally URLSearchParams handles it, but PHP sometimes checks isset($_GET['api'])
-    // let's stick to standard params first.
-    const targetUrl = `${baseUrl}/galerySelection.php?${urlParams.toString()}`;
+    if (!medium) {
+        queryString = queryString.replace("description=", "description");
+    }
+
+    const targetUrl = `${baseUrl}/galerySelection.php?${queryString}`;
 
     try {
         const response = await fetch(targetUrl);
@@ -90,5 +97,54 @@ export async function fetchGalleryData(collectionId: string = "0", medium: strin
                 }
             ]
         };
+    }
+}
+
+
+
+export interface ApiCollection {
+    id: string;
+    name: string;
+}
+
+export async function fetchCollections(): Promise<ApiCollection[]> {
+    // Base URL is always relative proxy path (Dev: Vite proxy, Prod: Vercel rewrite)
+    const baseUrl = "/api_sylviane";
+    const targetUrl = `${baseUrl}/galerySelection.php?api&collections`;
+
+    try {
+        const response = await fetch(targetUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const text = await response.text();
+
+        try {
+            const data = JSON.parse(text);
+
+            // API returns { collections: [...] }
+            if (data && Array.isArray(data.collections)) {
+                return data.collections.map((col: any) => ({
+                    id: col.collection_id,
+                    name: col.name
+                }));
+            } else {
+                console.error("API returned unexpected structure for collections:", data);
+                return [];
+            }
+        } catch (e) {
+            console.error("API returned non-JSON for collections:", text);
+            throw new Error("Réponse serveur invalide (Non-JSON)");
+        }
+    } catch (error) {
+        console.warn("API collections fetch failed, using Mock Data", error);
+        // Mock data for collections if API fails
+        return [
+            { id: "1", name: "Arts cyniques et Homme dentelle" },
+            { id: "3", name: "L'oeuf Story" },
+            { id: "22", name: "Dis-moi des poèmes" },
+            { id: "26", name: "L'ombre des hommes" },
+            { id: "36", name: "Au fond de la mère" }
+        ];
     }
 }

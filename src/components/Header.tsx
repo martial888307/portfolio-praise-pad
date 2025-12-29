@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Menu, X } from "lucide-react";
 
 const navItems = [
@@ -54,34 +55,59 @@ export function Header() {
 
         {/* Mobile Menu Button */}
         <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="md:hidden p-2 text-foreground hover:text-primary transition-colors"
-          aria-label="Menu"
+          onClick={() => setIsMobileMenuOpen(true)}
+          className={`md:hidden p-2 transition-colors ${isScrolled ? "text-foreground hover:text-primary" : "text-cream hover:text-bronze-light"}`}
+          aria-label="Ouvrir le menu"
         >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          <Menu size={24} />
         </button>
       </div>
 
-      {/* Mobile Menu */}
-      <div
-        className={`md:hidden absolute top-full left-0 right-0 bg-background/98 backdrop-blur-md border-b border-border transition-all duration-300 ${isMobileMenuOpen
-          ? "opacity-100 visible translate-y-0"
-          : "opacity-0 invisible -translate-y-4"
-          }`}
-      >
-        <nav className="container py-6 flex flex-col gap-4">
-          {navItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-lg font-body uppercase tracking-widest text-foreground/80 hover:text-primary transition-colors py-2"
-            >
-              {item.label}
-            </a>
-          ))}
-        </nav>
-      </div>
+      {/* Mobile Menu Overlay - Portal to Body to avoid stacking context issues */}
+      {isMobileMenuOpen && createPortal(
+        <div
+          className={`md:hidden fixed inset-0 z-[100] backdrop-blur-md transition-all duration-500 ease-in-out ${isMobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+            }`}
+          style={{ backgroundColor: "rgba(10, 10, 10, 0.9)" }}
+        >
+          <div className="flex flex-col h-full relative">
+            {/* Close Button */}
+            <div className="container flex justify-end py-6">
+              <button
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="p-2 text-cream/80 hover:text-cream transition-colors"
+                aria-label="Fermer le menu"
+              >
+                <X size={32} />
+              </button>
+            </div>
+
+            {/* Menu Items Centered */}
+            <nav className="flex-1 flex flex-col items-center justify-center gap-8 pb-20">
+              {navItems.map((item, index) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`font-display text-3xl md:text-4xl text-cream hover:text-bronze-light transition-all duration-300 transform ${isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+                    }`}
+                  style={{ transitionDelay: `${index * 100}ms` }}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+
+            {/* Decoratif Element */}
+            <div className="absolute bottom-10 left-0 right-0 text-center">
+              <span className="font-body text-xs uppercase tracking-[0.2em] text-cream/40">
+                Sylviane Le Boulc'h
+              </span>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </header>
   );
 }

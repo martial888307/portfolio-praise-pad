@@ -1,27 +1,38 @@
 import { useState, useEffect } from "react";
-import { fetchGalleryData, ApiArtwork } from "../services/api";
+import { fetchGalleryData, fetchCollections, ApiArtwork, ApiCollection } from "../services/api";
 
 export interface Collection {
     id: string;
     name: string;
 }
 
-// Static list of collections based on User documentation
-const STATIC_COLLECTIONS: Collection[] = [
-    { id: "1", name: "Arts cyniques et Homme dentelle" },
-    { id: "3", name: "L'oeuf Story" },
-    { id: "22", name: "Dis-moi des poèmes" },
-    { id: "26", name: "L'ombre des hommes" },
-    { id: "36", name: "Au fond de la mère" }
-];
-
 export function useGallery() {
     const [artworks, setArtworks] = useState<ApiArtwork[]>([]);
-    const [collections] = useState<Collection[]>(STATIC_COLLECTIONS);
+    const [collections, setCollections] = useState<Collection[]>([]);
     const [selectedCollectionId, setSelectedCollectionId] = useState<string>("");
     const [selectedMedium, setSelectedMedium] = useState<string>("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    // Initial load for collections
+    useEffect(() => {
+        async function loadCollections() {
+            try {
+                const apiCols = await fetchCollections();
+                const mappedCols = apiCols.map((c: ApiCollection) => ({
+                    id: c.id,
+                    name: c.name
+                }));
+                // Sort by name
+                mappedCols.sort((a, b) => a.name.localeCompare(b.name));
+                setCollections(mappedCols);
+            } catch (err) {
+                console.error("Failed to load collections", err);
+                setCollections([]);
+            }
+        }
+        loadCollections();
+    }, []);
 
     useEffect(() => {
         // If nothing is selected, we don't fetch anything -> Gallery component shows placeholder

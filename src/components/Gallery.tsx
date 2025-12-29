@@ -277,18 +277,38 @@ export function Gallery() {
           </button>
 
           <div
-            className="max-w-5xl max-h-[85vh] mx-4 animate-scale-in"
+            className="max-w-5xl max-h-[85vh] mx-4 animate-scale-in relative group"
             onClick={(e) => e.stopPropagation()}
           >
-            <img
-              src={getImageUrl(artworks[lightboxIndex].img_url)}
-              alt={artworks[lightboxIndex].name}
-              className="max-w-full max-h-[75vh] object-contain shadow-2xl"
-            />
+            <div className="relative">
+              <img
+                src={getImageUrl(artworks[lightboxIndex].img_url)}
+                alt={artworks[lightboxIndex].name}
+                className="max-w-full max-h-[75vh] object-contain shadow-2xl"
+              />
+
+              {/* Description Overlay on Hover */}
+              {artworks[lightboxIndex].description && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 overflow-y-auto p-8 rounded-sm backdrop-blur-[2px]">
+                  <p className="font-body text-cream text-lg md:text-xl text-center leading-relaxed animate-fade-in">
+                    {artworks[lightboxIndex].description}
+                  </p>
+                </div>
+              )}
+            </div>
+
             <div className="mt-6 text-center">
-              <h3 className="font-display text-2xl text-cream">
-                {artworks[lightboxIndex].name}
-              </h3>
+              <div className="flex items-center justify-center gap-3">
+                <h3 className="font-display text-2xl text-cream inline-block">
+                  {artworks[lightboxIndex].name}
+                </h3>
+                {/* Sold Badge */}
+                {(String(artworks[lightboxIndex].sold) === "1" || Number(artworks[lightboxIndex].sold) === 1) && (
+                  <span className="font-body text-xs uppercase tracking-widest text-[#FF4444] border border-[#FF4444] px-2 py-0.5 rounded-sm">
+                    Vendu
+                  </span>
+                )}
+              </div>
               <p className="font-body text-cream/70 mt-2">
                 {artworks[lightboxIndex].collection_name}
                 {artworks[lightboxIndex].dateRealisation && ` · ${artworks[lightboxIndex].dateRealisation}`}
