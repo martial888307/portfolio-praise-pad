@@ -1,0 +1,12 @@
+{
+    "rewrites": [
+        {
+            "source": "/api_sylviane/:path*",
+            "destination": "https://www.sylvianeleboulch.com/:path*"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/index.html"
+        }
+    ]
+}

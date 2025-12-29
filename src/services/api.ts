@@ -27,9 +27,8 @@ export async function fetchGalleryData(collectionId: string = "0", medium: strin
     }
 
     // Determine base URL based on environment
-    const baseUrl = import.meta.env.DEV
-        ? "/api_sylviane"
-        : "https://www.sylvianeleboulch.com";
+    // Base URL is always relative proxy path (Dev: Vite proxy, Prod: Vercel rewrite)
+    const baseUrl = "/api_sylviane";
 
     // Start with ?api to ensure it's first if order matters, though logic above handles params
     const queryString = urlParams.toString().replace("api=", "api"); // Handle empty value for api param if needed specifically as ?api
