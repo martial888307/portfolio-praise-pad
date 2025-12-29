@@ -11,21 +11,31 @@ export interface GalleryData {
     artworks: ApiArtwork[];
 }
 
-export async function fetchGalleryData(collectionId: string = "", medium: string = ""): Promise<GalleryData> {
+// Valid parameters based on documentation
+export async function fetchGalleryData(collectionId: string = "0", medium: string = ""): Promise<GalleryData> {
     const urlParams = new URLSearchParams();
+
+    // API requires 'api' parameter (value can be empty but param must exist)
     urlParams.append("api", "");
-    urlParams.append("collection_id", collectionId);
+
+    // collection_id: 0 for all, or specific ID
+    urlParams.append("collection_id", collectionId || "0");
+
+    // description: empty for all, or 'peinture', 'dessin', etc.
     if (medium) {
         urlParams.append("description", medium);
     }
 
     // Determine base URL based on environment
-    // In dev, we use the proxy set up in vite.config.ts (likely /api_sylviane)
-    // In prod, we use the real domain directly
     const baseUrl = import.meta.env.DEV
         ? "/api_sylviane"
         : "https://www.sylvianeleboulch.com";
 
+    // Start with ?api to ensure it's first if order matters, though logic above handles params
+    const queryString = urlParams.toString().replace("api=", "api"); // Handle empty value for api param if needed specifically as ?api
+
+    // Ideally URLSearchParams handles it, but PHP sometimes checks isset($_GET['api'])
+    // let's stick to standard params first.
     const targetUrl = `${baseUrl}/galerySelection.php?${urlParams.toString()}`;
 
     try {
