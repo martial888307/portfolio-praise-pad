@@ -61,7 +61,7 @@ export async function fetchGalleryData(collectionId: string = "", medium: string
                     collection_id: "2",
                     collection_name: "Dessin",
                     dateRealisation: "2023",
-                    img_url: "/BDD/ARTWORKS/186/image/card/5f2fea3d42e93.JPG"
+                    img_url: "/BDD/ARTWORKS/185/image/card/5f2fe934b7300.JPG"
                 },
                 {
                     id: "3",
@@ -69,7 +69,7 @@ export async function fetchGalleryData(collectionId: string = "", medium: string
                     collection_id: "1",
                     collection_name: "Peinture",
                     dateRealisation: "2022",
-                    img_url: "/BDD/ARTWORKS/187/image/card/5f2feb2b4bd0f.JPG"
+                    img_url: "/BDD/ARTWORKS/185/image/card/5f2fe934b7300.JPG"
                 },
                 {
                     id: "4",
@@ -77,7 +77,7 @@ export async function fetchGalleryData(collectionId: string = "", medium: string
                     collection_id: "3",
                     collection_name: "Volume",
                     dateRealisation: "2021",
-                    img_url: "/BDD/ARTWORKS/188/image/card/5f2febf0a2c0a.JPG"
+                    img_url: "/BDD/ARTWORKS/185/image/card/5f2fe934b7300.JPG"
                 }
             ]
         };
