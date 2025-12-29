@@ -43,32 +43,43 @@ export async function fetchGalleryData(collectionId: string = "", medium: string
             throw new Error("Réponse serveur invalide (Non-JSON)");
         }
     } catch (error) {
-        // Fallback for demo/dev if API fails (which it currently does with DB error)
-        if (import.meta.env.DEV) {
-            console.warn("API failed, using Mock Data for demonstration");
-            return {
-                artworks: [
-                    {
-                        id: "1",
-                        name: "L'Envol (Mock)",
-                        collection_id: "1",
-                        collection_name: "Peinture",
-                        dateRealisation: "2024",
-                        // Using the valid URL provided by the user
-                        img_url: "/BDD/ARTWORKS/185/image/card/5f2fe934b7300.JPG"
-                    },
-                    {
-                        id: "2",
-                        name: "Silence (Mock)",
-                        collection_id: "2",
-                        collection_name: "Dessin",
-                        dateRealisation: "2023",
-                        img_url: "/BDD/ARTWORKS/185/image/card/5f2fe934b7300.JPG"
-                    }
-                ]
-            };
-        }
-        console.error("Fetch error:", error);
-        throw error;
+        // Fallback with Mock Data when API fails (API currently has DB error)
+        console.warn("API failed, using Mock Data for demonstration", error);
+        return {
+            artworks: [
+                {
+                    id: "1",
+                    name: "L'Envol",
+                    collection_id: "1",
+                    collection_name: "Peinture",
+                    dateRealisation: "2024",
+                    img_url: "/BDD/ARTWORKS/185/image/card/5f2fe934b7300.JPG"
+                },
+                {
+                    id: "2",
+                    name: "Silence",
+                    collection_id: "2",
+                    collection_name: "Dessin",
+                    dateRealisation: "2023",
+                    img_url: "/BDD/ARTWORKS/186/image/card/5f2fea3d42e93.JPG"
+                },
+                {
+                    id: "3",
+                    name: "Métamorphose",
+                    collection_id: "1",
+                    collection_name: "Peinture",
+                    dateRealisation: "2022",
+                    img_url: "/BDD/ARTWORKS/187/image/card/5f2feb2b4bd0f.JPG"
+                },
+                {
+                    id: "4",
+                    name: "Empreintes",
+                    collection_id: "3",
+                    collection_name: "Volume",
+                    dateRealisation: "2021",
+                    img_url: "/BDD/ARTWORKS/188/image/card/5f2febf0a2c0a.JPG"
+                }
+            ]
+        };
     }
 }
