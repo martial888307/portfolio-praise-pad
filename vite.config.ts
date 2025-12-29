@@ -8,6 +8,13 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    proxy: {
+      '/api_sylviane': {
+        target: 'https://www.sylvianeleboulch.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api_sylviane/, ''),
+      },
+    },
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {

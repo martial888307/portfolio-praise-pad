@@ -48,8 +48,8 @@ export function Contact() {
             </div>
 
             <p className="fade-in-up delay-100 font-body text-lg text-foreground/80 leading-relaxed">
-              Pour toute demande d'acquisition, de collaboration ou d'exposition, 
-              n'hésitez pas à me contacter. Je serai ravie d'échanger avec vous 
+              Pour toute demande d'acquisition, de collaboration ou d'exposition,
+              n'hésitez pas à me contacter. Je serai ravie d'échanger avec vous
               sur mon travail et mes projets.
             </p>
 
@@ -79,14 +79,14 @@ export function Contact() {
                   <p className="font-body text-sm text-muted-foreground uppercase tracking-wider">
                     Atelier
                   </p>
-                  <p className="font-body text-foreground">Paris, France</p>
+                  <p className="font-body text-foreground">Vieille-Église-en-Yvelines, France</p>
                 </div>
               </div>
             </div>
 
             <div className="fade-in-up delay-300 flex gap-4">
               <a
-                href="https://instagram.com"
+                href="https://instagram.com/sleboulch"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-12 h-12 bg-foreground/5 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300"
@@ -95,7 +95,7 @@ export function Contact() {
                 <Instagram className="w-5 h-5" />
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/sylviane-le-boulch-a9280130/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-12 h-12 bg-foreground/5 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300"

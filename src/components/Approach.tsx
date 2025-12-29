@@ -41,7 +41,7 @@ export function Approach() {
           </h2>
           <div className="w-16 h-px bg-bronze mx-auto my-8 fade-in-up delay-200" />
           <p className="font-body text-lg text-cream/70 max-w-3xl mx-auto fade-in-up delay-300">
-            Mon travail explore la condition humaine à travers quatre thèmes 
+            Mon travail explore la condition humaine à travers quatre thèmes
             fondamentaux qui s'entrelacent comme les fils d'une dentelle.
           </p>
         </div>
@@ -55,7 +55,7 @@ export function Approach() {
               style={{ animationDelay: `${0.2 + index * 0.1}s` }}
             >
               <div className="flex items-start gap-6">
-                <span className="font-display text-5xl md:text-6xl text-bronze/30 group-hover:text-bronze transition-colors duration-500">
+                <span className="font-display text-5xl md:text-6xl text-bronze/50 group-hover:text-bronze transition-colors duration-500">
                   {theme.number}
                 </span>
                 <div className="pt-2">
@@ -74,7 +74,7 @@ export function Approach() {
         {/* Quote */}
         <div className="mt-24 text-center fade-in-up delay-500">
           <blockquote className="font-display text-2xl md:text-3xl lg:text-4xl italic text-cream/90 max-w-4xl mx-auto leading-relaxed">
-            « Je cherche à révéler l'invisible qui nous relie, 
+            « Je cherche à révéler l'invisible qui nous relie,
             à sculpter le vide autant que la matière. »
           </blockquote>
           <p className="font-body text-sm uppercase tracking-widest text-bronze mt-8">

@@ -23,17 +23,17 @@ export function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
-        isScrolled
-          ? "bg-background/95 backdrop-blur-md shadow-sm py-4"
-          : "bg-transparent py-6"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${isScrolled
+        ? "bg-background/95 backdrop-blur-md shadow-sm py-4"
+        : "bg-gradient-to-b from-charcoal/40 to-transparent py-6"
+        }`}
     >
       <div className="container flex items-center justify-between">
         {/* Logo */}
         <a
           href="#accueil"
-          className="font-display text-xl md:text-2xl font-medium tracking-wide text-foreground hover:text-primary transition-colors"
+          className={`font-display text-xl md:text-2xl font-medium tracking-wide transition-colors ${isScrolled ? "text-foreground hover:text-primary" : "text-cream hover:text-bronze-light"
+            }`}
         >
           Sylviane <span className="italic">Le Boulc'h</span>
         </a>
@@ -44,7 +44,8 @@ export function Header() {
             <a
               key={item.href}
               href={item.href}
-              className="nav-link text-sm font-body uppercase tracking-widest text-foreground/80 hover:text-foreground transition-colors pb-1"
+              className={`nav-link text-sm font-body uppercase tracking-widest transition-colors pb-1 ${isScrolled ? "text-foreground/80 hover:text-foreground" : "text-cream/90 hover:text-cream"
+                }`}
             >
               {item.label}
             </a>
@@ -63,11 +64,10 @@ export function Header() {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden absolute top-full left-0 right-0 bg-background/98 backdrop-blur-md border-b border-border transition-all duration-300 ${
-          isMobileMenuOpen
-            ? "opacity-100 visible translate-y-0"
-            : "opacity-0 invisible -translate-y-4"
-        }`}
+        className={`md:hidden absolute top-full left-0 right-0 bg-background/98 backdrop-blur-md border-b border-border transition-all duration-300 ${isMobileMenuOpen
+          ? "opacity-100 visible translate-y-0"
+          : "opacity-0 invisible -translate-y-4"
+          }`}
       >
         <nav className="container py-6 flex flex-col gap-4">
           {navItems.map((item) => (

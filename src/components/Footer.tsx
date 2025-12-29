@@ -11,7 +11,7 @@ export function Footer() {
               Sylviane <span className="italic">Le Boulc'h</span>
             </a>
             <p className="font-body text-sm mt-2">
-              Artiste plasticienne · Paris
+              Artiste plasticienne · Vieille-Église-en-Yvelines
             </p>
           </div>
 
