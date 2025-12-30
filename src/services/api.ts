@@ -183,3 +183,56 @@ export async function fetchCollections(): Promise<ApiCollection[]> {
         ];
     }
 }
+
+export interface ContactFormData {
+    name: string;
+    email: string;
+    subject: string;
+    message: string;
+}
+
+export async function sendContactEmail(data: ContactFormData): Promise<{ success: boolean; message: string }> {
+    const baseUrl = "/api_sylviane";
+    const targetUrl = `${baseUrl}/mail_api.php`;
+
+    try {
+        const response = await fetch(targetUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+
+        // The API might return 200 even for logical errors, so we parse the JSON
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const responseText = await response.text();
+
+        try {
+            const responseData = JSON.parse(responseText);
+
+            // Check for success key based on user description [success => ...]
+            if (responseData.success) {
+                return { success: true, message: responseData.success };
+            } else if (responseData.error) {
+                return { success: false, message: responseData.error };
+            } else {
+                // Fallback if structure is different but valid JSON
+                return { success: true, message: "Email envoyé avec succès" };
+            }
+
+        } catch (e) {
+            console.error("API contact response non-JSON:", responseText);
+            // If it's not JSON but 200 OK, it might be a simple text success? 
+            // But user said Format: JSON. Let's assume error if non-JSON for safety.
+            throw new Error("Réponse serveur invalide");
+        }
+
+    } catch (error) {
+        console.error("Error sending contact email:", error);
+        throw error;
+    }
+}

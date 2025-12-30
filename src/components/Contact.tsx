@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Instagram, Linkedin, Mail, MapPin } from "lucide-react";
+import { Instagram, Linkedin, Mail, MapPin, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { sendContactEmail } from "@/services/api";
 
 export function Contact() {
   const { toast } = useToast();
@@ -11,13 +12,37 @@ export function Contact() {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Message envoyé",
-      description: "Merci pour votre message. Je vous répondrai dans les plus brefs délais.",
-    });
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    setIsSubmitting(true);
+
+    try {
+      const result = await sendContactEmail(formData);
+
+      if (result.success) {
+        toast({
+          title: "Succès",
+          description: "Votre demande a bien été envoyée",
+        });
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Erreur",
+          description: "Problème à l'envoi de la demande, veuillez réessayer plus tard",
+        });
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Erreur",
+        description: "Problème à l'envoi de la demande, veuillez réessayer plus tard",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
@@ -54,22 +79,7 @@ export function Contact() {
             </p>
 
             <div className="fade-in-up delay-200 space-y-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-primary/10 flex items-center justify-center">
-                  <Mail className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <p className="font-body text-sm text-muted-foreground uppercase tracking-wider">
-                    Email
-                  </p>
-                  <a
-                    href="mailto:sleboulch@gmail.com"
-                    className="font-body text-foreground hover:text-primary transition-colors"
-                  >
-                    sleboulch@gmail.com
-                  </a>
-                </div>
-              </div>
+              {/* Email removed to prevent spam */}
 
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-primary/10 flex items-center justify-center">
@@ -205,9 +215,17 @@ export function Contact() {
 
               <button
                 type="submit"
-                className="w-full sm:w-auto px-10 py-4 bg-primary text-primary-foreground font-body uppercase tracking-widest text-sm hover:bg-primary/90 transition-colors"
+                disabled={isSubmitting}
+                className="w-full sm:w-auto px-10 py-4 bg-primary text-primary-foreground font-body uppercase tracking-widest text-sm hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                Envoyer
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Envoi en cours...
+                  </>
+                ) : (
+                  "Envoyer"
+                )}
               </button>
             </form>
           </div>
