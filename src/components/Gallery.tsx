@@ -22,6 +22,7 @@ export function Gallery() {
     setSelectedMedium,
     loading,
     error,
+    availableMediums,
   } = useGallery();
 
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -94,11 +95,13 @@ export function Gallery() {
                 onChange={(e) => setSelectedMedium(e.target.value)}
                 className="w-full h-10 px-3 py-2 text-sm rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring"
               >
-                {mediums.map((med) => (
-                  <option key={med.value} value={med.value}>
-                    {med.label}
-                  </option>
-                ))}
+                {mediums
+                  .filter(m => m.value === "" || availableMediums.includes(m.value))
+                  .map((med) => (
+                    <option key={med.value} value={med.value}>
+                      {med.label}
+                    </option>
+                  ))}
               </select>
             </div>
 
@@ -110,6 +113,15 @@ export function Gallery() {
                 Réinitialiser
               </button>
             </div>
+          </div>
+        )}
+
+        {/* Collection Description with Animation */}
+        {selectedCollectionId && collections.find(c => c.id === selectedCollectionId)?.description && (
+          <div key={selectedCollectionId} className="max-w-3xl mx-auto mb-16 px-4 text-center overflow-hidden">
+            <p className="font-display italic tracking-tight text-lg md:text-xl text-primary/80 leading-relaxed animate-slide-up">
+              {collections.find(c => c.id === selectedCollectionId)?.description || ""}
+            </p>
           </div>
         )}
 

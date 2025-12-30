@@ -105,6 +105,7 @@ export async function fetchGalleryData(collectionId: string = "0", medium: strin
 export interface ApiCollection {
     id: string;
     name: string;
+    description?: string;
 }
 
 export async function fetchCollections(): Promise<ApiCollection[]> {
@@ -126,7 +127,8 @@ export async function fetchCollections(): Promise<ApiCollection[]> {
             if (data && Array.isArray(data.collections)) {
                 return data.collections.map((col: any) => ({
                     id: col.collection_id,
-                    name: col.name
+                    name: col.name,
+                    description: col.description || ""
                 }));
             } else {
                 console.error("API returned unexpected structure for collections:", data);
@@ -137,11 +139,44 @@ export async function fetchCollections(): Promise<ApiCollection[]> {
             throw new Error("Réponse serveur invalide (Non-JSON)");
         }
     } catch (error) {
-        console.warn("API collections fetch failed, using Mock Data", error);
-        // Mock data for collections if API fails
+        console.warn("API collections fetch failed, using Mock Data. Error:", error);
+        // Mock data for collections if API fails - Updated with descriptions
         return [
-            { id: "1", name: "Arts cyniques et Homme dentelle" },
-            { id: "3", name: "L'oeuf Story" },
+            {
+                id: "1",
+                name: "Art cynique et hommes dentelles",
+                description: "Je brode à l'encre, à l'infini des visages entremêlés, aux regards sidérés. Cet assemblage de trognes structure des formes biologiques qui se font ou se défont, flirtant avec le déséquilibre auquel chacun contribue. Au coeur de tout, singulier, fragile, disgracieux, l'humain qui peut tout détruire, peut aussi choisir de composer, en lien avec les autres, un tout fort et beau. L'apparition de la femme, au travers de robes de dentelles d'hommes tente au delà d'une symbiose esthétique, de questionner les récits de fantasme et de séduction."
+            },
+            {
+                id: "24",
+                name: "Dentelles et fossiles",
+                description: "\"La mer était là\", disait mon père en ramassant des coquillages fossiles avec moi, en pleine campagne. J'ai créé ces pièces en imaginant des extraterrestres dans une découverte semblable à quelques milliers d'années. La terre, telle une Pompei, serait alors un lieu où nous-mêmes ne serions plus que de jolis coquillages à la ramasse."
+            },
+            {
+                id: "3",
+                name: "L'Oeuf Story",
+                description: "Oubliées les couleurs franches, l'éclat des couleurs, la fantaisie des personnages. Nues et rondes comme un oeuf au premier jour, les femmes, intérieures, aux prises avec le nid, le corps, la fabrication, la douleur, la plénitude aussi, consciente de la responsabilité à venir ou du poids d'une obligation silencieuse, regardent devant. Des natures mortes qui portent la vie."
+            },
+            {
+                id: "5",
+                name: "Les Sumos Q",
+                description: "Flirter avec l'abstraction, c'est moins figurer, moins affirmer. Tout peut être dit, car ce sont d'abord les couleurs qui parlent. Quel plaisir l'exagération! Les femmes prennent des formes telles celles de Sumos sculptées dans le granit rose qui m'est cher."
+            },
+            {
+                id: "14",
+                name: "Noeuds",
+                description: "René Char écrivait: \"Imite le moins possible les hommes dans leur énigmatique maladie de faire des nœuds.\" Ce mot aux mille définitions m'inspire mille dessins, du plus drôle au plus inquiétant."
+            },
+            {
+                id: "18",
+                name: "Motus",
+                description: "Motus... et bouche cousue. Le secret ou l'héritage du secret, cousu de fil rouge, personnel, familial ou politique, la violence d'une censure étouffante qui d' un coup de ciseau libèrerait pourtant souffle et sourire."
+            },
+            {
+                id: "2",
+                name: "Des chefs à l'oeuvre",
+                description: "C'est d'abord à l'encre que l'homme subit ma dérision. Un état d'esprit dessins de presse dans lequel mon père m'a baignée."
+            },
             { id: "22", name: "Dis-moi des poèmes" },
             { id: "26", name: "L'ombre des hommes" },
             { id: "36", name: "Au fond de la mère" }

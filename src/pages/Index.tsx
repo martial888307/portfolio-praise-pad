@@ -13,7 +13,7 @@ const Index = () => {
       <Header />
       <main>
         <Hero />
-        <ArtworkCarousel />
+        {/* <ArtworkCarousel /> - Removed as per user request */}
         <About />
         <Gallery />
         <Approach />
