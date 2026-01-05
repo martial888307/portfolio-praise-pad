@@ -24,10 +24,9 @@ export function Hero() {
           <br />
           <span className="italic font-normal">comme médium</span>
         </h1>
-        
+
         <p className="hero-text-reveal delay-200 font-body text-lg sm:text-xl md:text-2xl text-cream/80 max-w-2xl mx-auto mb-10 tracking-wide">
-          Artiste plasticienne explorant la fragilité de l'existence 
-          à travers la dentelle humaine
+          Artiste plasticienne qui dessine un langage pour dérouler ses récits.
         </p>
 
         <div className="hero-text-reveal delay-400 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -36,12 +35,6 @@ export function Hero() {
             className="px-8 py-4 bg-primary text-primary-foreground font-body uppercase tracking-widest text-sm hover:bg-primary/90 transition-colors"
           >
             Découvrir les œuvres
-          </a>
-          <a
-            href="#apropos"
-            className="px-8 py-4 border border-cream/50 text-cream font-body uppercase tracking-widest text-sm hover:bg-cream/10 transition-colors"
-          >
-            À propos
           </a>
         </div>
       </div>

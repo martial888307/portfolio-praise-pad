@@ -42,9 +42,17 @@ export function Footer() {
             </a>
           </nav>
 
-          <p className="font-body text-sm">
-            © {new Date().getFullYear()} Tous droits réservés
-          </p>
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
+            <p className="font-body text-sm">
+              © {new Date().getFullYear()} Tous droits réservés
+            </p>
+            <a
+              href="/mentions-legales"
+              className="font-body text-xs text-cream/40 hover:text-cream transition-colors"
+            >
+              Mentions Légales
+            </a>
+          </div>
         </div>
       </div>
     </footer>

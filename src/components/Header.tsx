@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Menu, X } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 const navItems = [
   { label: "Accueil", href: "#accueil" },
@@ -13,6 +14,7 @@ const navItems = [
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,6 +23,13 @@ export function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const getHref = (href: string) => {
+    if (location.pathname === "/") {
+      return href;
+    }
+    return `/${href}`;
+  };
 
   return (
     <header
@@ -32,7 +41,7 @@ export function Header() {
       <div className="container flex items-center justify-between">
         {/* Logo */}
         <a
-          href="#accueil"
+          href={getHref("#accueil")}
           className={`font-display text-xl md:text-2xl font-medium tracking-wide transition-colors ${isScrolled ? "text-foreground hover:text-primary" : "text-cream hover:text-bronze-light"
             }`}
         >
@@ -44,7 +53,7 @@ export function Header() {
           {navItems.map((item) => (
             <a
               key={item.href}
-              href={item.href}
+              href={getHref(item.href)}
               className={`nav-link text-sm font-body uppercase tracking-widest transition-colors pb-1 ${isScrolled ? "text-foreground/80 hover:text-foreground" : "text-cream/90 hover:text-cream"
                 }`}
             >
@@ -87,7 +96,7 @@ export function Header() {
               {navItems.map((item, index) => (
                 <a
                   key={item.href}
-                  href={item.href}
+                  href={getHref(item.href)}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`font-display text-3xl md:text-4xl text-cream hover:text-bronze-light transition-all duration-300 transform ${isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
                     }`}

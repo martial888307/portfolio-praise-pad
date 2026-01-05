@@ -2,7 +2,7 @@ import artistPortrait from "@/assets/artist-portrait.jpg";
 
 export function About() {
   return (
-    <section id="apropos" className="py-24 md:py-32 bg-secondary">
+    <section id="apropos" className="py-24 md:py-32 bg-secondary scroll-mt-28">
       <div className="container">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Image */}
@@ -34,21 +34,26 @@ export function About() {
 
             <div className="fade-in-up delay-200 space-y-6 font-body text-lg text-foreground/80 leading-relaxed">
               <p>
-                Depuis plus de dix ans, je sculpte l'éphémère. La dentelle, 
-                ce tissu ajouré qui laisse passer la lumière, est devenue 
-                mon vocabulaire pour exprimer ce qui nous constitue : 
-                la vulnérabilité, la mémoire, le passage du temps.
+                J’ai toujours dessiné comme certains écrivent un journal.
               </p>
               <p>
-                Mes œuvres explorent trois thèmes majeurs : la femme comme 
-                sujet et objet, l'eau qui nous compose et nous traverse, 
-                et les traces fossiles que nous laissons derrière nous. 
-                Chaque pièce est une méditation sur notre condition humaine.
+                Élève du primaire, perdue devant les problèmes de baignoires et de trains qui se croisent, je me suis
+                découverte, arrivée au collège, un goût profond pour les mathématiques — leur sens esthétique et
+                leur esthétique du sens.
               </p>
               <p>
-                Du bronze à la céramique, du dessin à la sculpture monumentale, 
-                je traduis cette « dentelle humaine » dans une multitude de médiums, 
-                cherchant toujours à révéler l'invisible qui nous relie.
+                C’est si beau, la théorie des ensembles.
+                Un concept dessiné qui me parlait enfin. Un langage.
+              </p>
+              <p>
+                Chaque année, les mathématiques m’enrichissaient de nouveaux signes, jusqu’au bout de mes
+                études scientifiques à Orsay, où j’ai même rêvé d’une carrière tournée vers l’astrophysique.
+                Jusqu’au moment où j’ai décidé de remettre, définitivement, ma tête dans les étoiles.
+              </p>
+              <p>
+                Depuis, le dessin est resté mon point d’ancrage. Il est devenu un outil de recherche et d’organisation
+                du chaos, le socle d’une pratique artistique que je développe aujourd’hui en peinture, sculpture,
+                céramique, dessin et autres curiosités.
               </p>
             </div>
 

@@ -9,6 +9,9 @@ export interface ApiArtwork {
     price?: string | number;
     visiblePrice?: string;
     sold?: string | number;
+    width?: string;
+    height?: string;
+    depth?: string;
 }
 
 export interface GalleryData {
@@ -69,7 +72,10 @@ export async function fetchGalleryData(collectionId: string = "0", medium: strin
                     collection_id: "1",
                     collection_name: "Peinture",
                     dateRealisation: "2024",
-                    img_url: "/BDD/ARTWORKS/185/image/card/5f2fe934b7300.JPG"
+                    img_url: "/BDD/ARTWORKS/185/image/card/5f2fe934b7300.JPG",
+                    description: "Acrylique sur toile",
+                    width: "100",
+                    height: "80"
                 },
                 {
                     id: "2",
@@ -77,7 +83,10 @@ export async function fetchGalleryData(collectionId: string = "0", medium: strin
                     collection_id: "2",
                     collection_name: "Dessin",
                     dateRealisation: "2023",
-                    img_url: "/BDD/ARTWORKS/185/image/card/5f2fe934b7300.JPG"
+                    img_url: "/BDD/ARTWORKS/185/image/card/5f2fe934b7300.JPG",
+                    description: "Encre sur papier",
+                    width: "50",
+                    height: "65"
                 },
                 {
                     id: "3",

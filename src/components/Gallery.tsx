@@ -12,7 +12,11 @@ const mediums = [
   { label: "Édition", value: "edition" },
 ];
 
-export function Gallery() {
+interface GalleryProps {
+  onEnquire?: (message: string) => void;
+}
+
+export function Gallery({ onEnquire }: GalleryProps) {
   const {
     artworks,
     collections,
@@ -52,12 +56,12 @@ export function Gallery() {
   };
 
   return (
-    <section id="galerie" className="py-24 md:py-32 bg-background min-h-screen">
+    <section id="galerie" className="py-24 md:py-32 bg-background min-h-screen scroll-mt-28">
       <div className="container">
         {/* Header */}
         <div className="text-center mb-16">
           <span className="font-body uppercase tracking-widest text-sm text-primary fade-in-up">
-            Collections
+            Explorez les collections !
           </span>
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl mt-4 text-foreground fade-in-up delay-100">
             Galerie des <span className="italic font-normal">œuvres</span>
@@ -88,7 +92,7 @@ export function Gallery() {
 
             <div className="w-full md:w-64">
               <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-2 text-center md:text-left">
-                Technique / Matériau
+                Technique / Medium
               </label>
               <select
                 value={selectedMedium}
@@ -158,9 +162,7 @@ export function Gallery() {
                     />
                   </svg>
                 </div>
-                <h3 className="font-display text-2xl md:text-3xl text-foreground mb-4">
-                  Explorez les collections
-                </h3>
+
                 <p className="font-body text-lg text-muted-foreground leading-relaxed mb-8">
                   Sélectionnez une collection ou une technique ci-dessus
                   pour découvrir les œuvres de Sylviane Le Boulc'h.
@@ -171,7 +173,7 @@ export function Gallery() {
                       key={col.id}
                       onClick={() => {
                         setSelectedCollectionId(col.id);
-                        setSelectedMedium("peinture");
+                        setSelectedMedium("");
                       }}
                       className="px-5 py-2.5 font-body text-sm border border-border hover:border-primary hover:text-primary transition-all duration-300 rounded-sm"
                     >
@@ -260,7 +262,7 @@ export function Gallery() {
         <div className="lightbox-overlay" onClick={closeLightbox}>
           <button
             onClick={closeLightbox}
-            className="absolute top-6 right-6 text-cream/70 hover:text-cream transition-colors z-10"
+            className="absolute top-6 right-6 text-cream/70 hover:text-cream transition-colors z-50"
             aria-label="Fermer"
           >
             <X size={32} />
@@ -271,7 +273,7 @@ export function Gallery() {
               e.stopPropagation();
               navigateLightbox("prev");
             }}
-            className="absolute left-4 md:left-8 text-cream/70 hover:text-cream transition-colors z-10"
+            className="hidden md:block absolute left-4 md:left-8 text-cream/70 hover:text-cream transition-colors z-50 p-2"
             aria-label="Précédent"
           >
             <ChevronLeft size={40} />
@@ -282,49 +284,112 @@ export function Gallery() {
               e.stopPropagation();
               navigateLightbox("next");
             }}
-            className="absolute right-4 md:right-8 text-cream/70 hover:text-cream transition-colors z-10"
+            className="hidden md:block absolute right-4 md:right-8 text-cream/70 hover:text-cream transition-colors z-50 p-2"
             aria-label="Suivant"
           >
             <ChevronRight size={40} />
           </button>
 
+          {/* Container Scrollable */}
           <div
-            className="max-w-5xl max-h-[85vh] mx-4 animate-scale-in relative group"
-            onClick={(e) => e.stopPropagation()}
+            className="w-full h-full overflow-y-auto flex items-center justify-center p-4 md:p-8"
+            onClick={(e) => {
+              // Close if clicking outside main content area
+              if (e.target === e.currentTarget) closeLightbox();
+            }}
           >
-            <div className="relative">
-              <img
-                src={getImageUrl(artworks[lightboxIndex].img_url)}
-                alt={artworks[lightboxIndex].name}
-                className="max-w-full max-h-[75vh] object-contain shadow-2xl"
-              />
+            <div
+              className="max-w-4xl w-full bg-black/40 backdrop-blur-sm rounded-sm overflow-hidden animate-scale-in my-auto shadow-2xl border border-white/10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Image Container */}
+              <div className="relative bg-black/20 flex justify-center">
+                <img
+                  src={getImageUrl(artworks[lightboxIndex].img_url)}
+                  alt={artworks[lightboxIndex].name}
+                  className="max-w-full max-h-[70vh] w-auto object-contain"
+                />
 
-              {/* Description Overlay on Hover */}
-              {artworks[lightboxIndex].description && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 overflow-y-auto p-8 rounded-sm backdrop-blur-[2px]">
-                  <p className="font-body text-cream text-lg md:text-xl text-center leading-relaxed animate-fade-in">
-                    {artworks[lightboxIndex].description}
-                  </p>
-                </div>
-              )}
-            </div>
-
-            <div className="mt-6 text-center">
-              <div className="flex items-center justify-center gap-3">
-                <h3 className="font-display text-2xl text-cream inline-block">
-                  {artworks[lightboxIndex].name}
-                </h3>
-                {/* Sold Badge */}
-                {(String(artworks[lightboxIndex].sold) === "1" || Number(artworks[lightboxIndex].sold) === 1) && (
-                  <span className="font-body text-xs uppercase tracking-widest text-[#FF4444] border border-[#FF4444] px-2 py-0.5 rounded-sm">
-                    Vendu
-                  </span>
-                )}
+                {/* Mobile Navigation overlay on image sides */}
+                <div className="md:hidden absolute inset-y-0 left-0 w-1/4 pointer-events-auto" onClick={() => navigateLightbox("prev")} />
+                <div className="md:hidden absolute inset-y-0 right-0 w-1/4 pointer-events-auto" onClick={() => navigateLightbox("next")} />
               </div>
-              <p className="font-body text-cream/70 mt-2">
-                {artworks[lightboxIndex].collection_name}
-                {artworks[lightboxIndex].dateRealisation && ` · ${artworks[lightboxIndex].dateRealisation}`}
-              </p>
+
+              {/* Details Section */}
+              <div className="p-6 md:p-8 bg-[#0a0a0a]">
+                <div className="flex flex-col md:flex-row gap-8 justify-between items-start">
+
+                  {/* Infos Oeuvre */}
+                  <div className="space-y-4 flex-1">
+                    <div>
+                      <h3 className="font-display text-3xl text-cream mb-1">
+                        {artworks[lightboxIndex].name}
+                      </h3>
+                      <p className="font-body text-cream/60 text-sm uppercase tracking-wider">
+                        {artworks[lightboxIndex].collection_name}
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-body text-cream/80">
+                      {/* Price / Dimensions */}
+                      <div>
+                        <span className="block text-cream/40 text-xs uppercase">Dimensions</span>
+                        <span>
+                          {[
+                            artworks[lightboxIndex].width,
+                            artworks[lightboxIndex].height,
+                            artworks[lightboxIndex].depth
+                          ].filter(Boolean).join(" x ") + " cm"}
+                        </span>
+                      </div>
+                      {/* Medium */}
+                      <div>
+                        <span className="block text-cream/40 text-xs uppercase">Technique</span>
+                        <span className="capitalize">
+                          {artworks[lightboxIndex].description || artworks[lightboxIndex].collection_name.split(' ')[0]}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Description */}
+
+                  </div>
+
+                  {/* Action Column */}
+                  <div className="w-full md:w-auto flex flex-col gap-4 min-w-[200px]">
+                    <div className="font-display text-2xl text-cream text-right md:text-right">
+                      {/* Price Logic */}
+                      {(String(artworks[lightboxIndex].sold) === "1" || Number(artworks[lightboxIndex].sold) === 1) ? (
+                        <span className="text-[#FF4444]">Vendu</span>
+                      ) : (
+                        <span>
+                          {String(artworks[lightboxIndex].visiblePrice) === "1" && artworks[lightboxIndex].price
+                            ? `${artworks[lightboxIndex].price} €`
+                            : "Prix sur demande"}
+                        </span>
+                      )}
+                    </div>
+
+                    {!(String(artworks[lightboxIndex].sold) === "1" || Number(artworks[lightboxIndex].sold) === 1) && (
+                      <button
+                        onClick={() => {
+                          const message = `Bonjour, je souhaiterais obtenir plus d'informations concernant l'œuvre "${artworks[lightboxIndex].name}" (Collection: ${artworks[lightboxIndex].collection_name}). Merci.`;
+                          closeLightbox();
+                          if (onEnquire) {
+                            onEnquire(message);
+                          } else {
+                            // Fallback
+                            window.location.href = "#contact";
+                          }
+                        }}
+                        className="w-full py-3 px-6 bg-primary text-primary-foreground font-body uppercase tracking-widest text-xs hover:bg-primary/90 transition-colors text-center"
+                      >
+                        Acheter / Demander
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
