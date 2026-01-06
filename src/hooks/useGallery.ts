@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchGalleryData, fetchCollections, ApiArtwork, ApiCollection } from "../services/api";
-import { detectMedium, getAvailableMediums } from "../utils/artworkHelper";
+import { detectMedium } from "../utils/artworkHelper";
+import { COLLECTION_CATEGORIES, CATEGORY_MAPPING } from "../data/collectionCategories";
 
 export interface Collection {
     id: string;
@@ -15,6 +16,7 @@ export function useGallery() {
     const [selectedMedium, setSelectedMedium] = useState<string>("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [availableMediums, setAvailableMediums] = useState<string[]>([]);
 
     // Initial load for collections
     useEffect(() => {
@@ -37,52 +39,65 @@ export function useGallery() {
         loadCollections();
     }, []);
 
-    const [availableMediums, setAvailableMediums] = useState<string[]>([]);
-
+    // Handle Collection Change & Auto-selection
     useEffect(() => {
-        // If nothing is selected, we don't fetch anything -> Gallery component shows placeholder
-        if (!selectedCollectionId && !selectedMedium) {
-            setArtworks([]);
+        if (!selectedCollectionId) {
             setAvailableMediums([]);
+            setSelectedMedium("");
+            setArtworks([]);
             return;
         }
+
+        // Get static categories for this collection
+        const rawCategories = COLLECTION_CATEGORIES[selectedCollectionId] || [];
+        // Map to French values
+        const mappedCategories = rawCategories.map(cat => CATEGORY_MAPPING[cat]).filter(Boolean);
+
+        setAvailableMediums(mappedCategories);
+
+        // Auto-select the first available medium
+        if (mappedCategories.length > 0) {
+            setSelectedMedium(mappedCategories[0]);
+        } else {
+            setSelectedMedium("");
+        }
+    }, [selectedCollectionId]);
+
+    // Data Loading & Filtering
+    useEffect(() => {
+        // Only load if we have a collection selected
+        if (!selectedCollectionId) return;
 
         async function loadData() {
             setLoading(true);
             setError(null);
             try {
-                // Client-side filtering strategy:
-                // 1. Always fetch ALL artworks for the collection (medium="")
-                // 2. Determine available mediums from the full list
-                // 3. Filter the displayed artworks client-side if a specific medium is selected
-
                 const colId = selectedCollectionId || "0";
-                // Pass empty string for medium to fetch everything
+                // Pass empty string for medium to fetch everything for the collection
                 const data = await fetchGalleryData(colId, "");
 
+
                 if (data && data.artworks) {
-                    const allArtworks = data.artworks;
+                    const loadedArtworks = data.artworks;
 
-                    // distinct mediums in this collection
-                    const available = getAvailableMediums(allArtworks);
-                    setAvailableMediums(available);
-
-                    // Filter for display
+                    // Filter for display based on the selected medium
+                    // Use the helper to detect medium for each artwork
                     if (selectedMedium) {
-                        const filtered = allArtworks.filter(art => detectMedium(art) === selectedMedium);
+                        const filtered = loadedArtworks.filter(art => detectMedium(art) === selectedMedium);
                         setArtworks(filtered);
                     } else {
-                        setArtworks(allArtworks);
+                        // Keep strict: if no medium is selected (shouldn't happen with auto-select unless empty), show all?
+                        // Or show nothing? User said "auto-select first".
+                        // Let's show all if for some reason no medium is selected but collection is.
+                        setArtworks(loadedArtworks);
                     }
                 } else {
                     setArtworks([]);
-                    setAvailableMediums([]);
                 }
             } catch (err: any) {
                 console.error("Gallery load error:", err);
                 setError("Impossible de charger la galerie.");
                 setArtworks([]);
-                setAvailableMediums([]);
             } finally {
                 setLoading(false);
             }

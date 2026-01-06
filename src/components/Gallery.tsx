@@ -120,7 +120,7 @@ export function Gallery({ onEnquire }: GalleryProps) {
           </div>
         )}
 
-        {/* Collection Description with Animation */}
+        {/* ... existing code ... */}
         {selectedCollectionId && collections.find(c => c.id === selectedCollectionId)?.description && (
           <div key={selectedCollectionId} className="max-w-3xl mx-auto mb-16 px-4 text-center overflow-hidden">
             <p className="font-display italic tracking-tight text-lg md:text-xl text-primary/80 leading-relaxed animate-slide-up">
@@ -128,6 +128,8 @@ export function Gallery({ onEnquire }: GalleryProps) {
             </p>
           </div>
         )}
+
+
 
         {/* Error State */}
         {error && (
@@ -168,18 +170,7 @@ export function Gallery({ onEnquire }: GalleryProps) {
                   pour découvrir les œuvres de Sylviane Le Boulc'h.
                 </p>
                 <div className="flex flex-wrap justify-center gap-3">
-                  {collections.slice(0, 4).map((col) => (
-                    <button
-                      key={col.id}
-                      onClick={() => {
-                        setSelectedCollectionId(col.id);
-                        setSelectedMedium("");
-                      }}
-                      className="px-5 py-2.5 font-body text-sm border border-border hover:border-primary hover:text-primary transition-all duration-300 rounded-sm"
-                    >
-                      {col.name}
-                    </button>
-                  ))}
+                  {/* Buttons removed */}
                 </div>
               </div>
             </div>

@@ -1,4 +1,12 @@
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { FileText } from "lucide-react";
 import artistPortrait from "@/assets/artist-portrait.jpg";
+import cvContent from "@/assets/cv-content.png";
+import cvBackground from "@/assets/cv-background.jpg";
 
 export function About() {
   return (
@@ -57,7 +65,7 @@ export function About() {
               </p>
             </div>
 
-            <div className="fade-in-up delay-300 pt-4">
+            <div className="fade-in-up delay-300 pt-4 flex flex-wrap items-center gap-6">
               <a
                 href="#demarche"
                 className="inline-flex items-center font-body uppercase tracking-widest text-sm text-primary hover:text-primary/80 transition-colors group"
@@ -65,6 +73,33 @@ export function About() {
                 Découvrir ma démarche
                 <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
               </a>
+
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button className="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 hover:bg-primary/20 text-primary font-body uppercase tracking-widest text-sm rounded-sm transition-colors">
+                    <FileText className="w-4 h-4" />
+                    Voir mon CV
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="max-w-4xl w-[95vw] h-[85vh] p-0 overflow-hidden border-none bg-transparent shadow-2xl">
+                  {/* Background Layer with Blur */}
+                  <div
+                    className="absolute inset-0 z-0 bg-cover bg-center"
+                    style={{ backgroundImage: `url(${cvBackground})` }}
+                  >
+                    <div className="absolute inset-0 backdrop-blur-md bg-background/40" />
+                  </div>
+
+                  {/* Content Layer */}
+                  <div className="relative z-10 w-full h-full overflow-y-auto p-4 md:p-8 flex justify-center">
+                    <img
+                      src={cvContent}
+                      alt="CV Sylviane Le Boulc'h"
+                      className="max-w-full h-auto shadow-lg object-contain bg-white/95"
+                    />
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>

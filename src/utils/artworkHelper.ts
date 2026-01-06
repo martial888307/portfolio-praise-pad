@@ -1,28 +1,54 @@
 import { ApiArtwork } from "../services/api";
 
-// Mapping of keywords to medium categories
-const MEDIUM_KEYWORDS: Record<string, string[]> = {
-    "peinture": ['peinture', 'acrylique', 'huile', 'toile', 'gouache', 'aquarelle'],
-    "dessin": ['dessin', 'encre', 'papier', 'fusain', 'crayon', 'mine', 'feutre', 'pastel'],
-    "volume": ['volume', 'sculpture', 'bronze', 'céramique', 'résine', 'terre', 'plâtre', 'fer', 'bois', 'raku'],
-    "installation": ['installation', 'dentelle'],
-    "edition": ['édition', 'gravure', 'estampe', 'lithographie', 'sérigraphie']
-};
-
 /**
  * Detects the medium category of an artwork based on its description.
  * Returns a normalized medium key (e.g., 'peinture', 'dessin') or null if no match found.
+ * 
+ * STRICT RULES (User defined):
+ * - Painting: contains 'acrylique' AND NOT 'papier'
+ * - Drawing: contains 'papier'
+ * - Volume: contains 'céramique' OR 'résine' OR 'plâtre' OR 'bronze'
+ * - Curiosity (Installation): contains 'installation'
+ * - Edition: contains 'edition'
  */
 export function detectMedium(artwork: ApiArtwork): string | null {
     if (!artwork.description) return null;
 
     const desc = artwork.description.toLowerCase();
 
-    // Check each category for keywords
-    for (const [category, keywords] of Object.entries(MEDIUM_KEYWORDS)) {
-        if (keywords.some(keyword => desc.includes(keyword))) {
-            return category;
-        }
+    // Priority Order:
+    // User complaint: "Installation" was stuck in "Drawing" (likely due to 'encre' -> Drawing in old logic).
+    // User rule for Drawing is STRICTLY "contains 'papier'".
+
+    // Curiosity (Installation)
+    // Rule: contains 'installation'
+    if (desc.includes('installation')) {
+        return 'installation';
+    }
+
+    // Drawing
+    // Rule: contains 'papier'
+    if (desc.includes('papier')) {
+        return 'dessin';
+    }
+
+    // Painting
+    // Rule: contains 'acrylique' AND NOT 'papier'
+    if (desc.includes('acrylique') && !desc.includes('papier')) {
+        return 'peinture';
+    }
+
+    // Volume
+    // Rule: contains 'céramique' OR 'résine' OR 'plâtre' OR 'bronze'
+    // (Keeping strict rules as requested, can broaden only if user asks again)
+    if (desc.includes('céramique') || desc.includes('résine') || desc.includes('plâtre') || desc.includes('bronze')) {
+        return 'volume';
+    }
+
+    // Edition
+    // Rule: contains 'edition'
+    if (desc.includes('edition') || desc.includes('édition')) {
+        return 'edition';
     }
 
     return null;
