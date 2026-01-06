@@ -2,8 +2,9 @@ import {
   Dialog,
   DialogContent,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
-import { FileText } from "lucide-react";
+import { FileText, X } from "lucide-react";
 import artistPortrait from "@/assets/artist-portrait.jpg";
 import cvContent from "@/assets/cv-content.png";
 import cvBackground from "@/assets/cv-background.jpg";
@@ -81,7 +82,7 @@ export function About() {
                     Voir mon CV
                   </button>
                 </DialogTrigger>
-                <DialogContent className="max-w-4xl w-[95vw] h-[85vh] p-0 overflow-hidden border-none bg-transparent shadow-2xl">
+                <DialogContent className="max-w-5xl w-[95vw] h-[90vh] p-0 overflow-hidden border-none bg-transparent shadow-2xl [&>button]:hidden">
                   {/* Background Layer with Blur */}
                   <div
                     className="absolute inset-0 z-0 bg-cover bg-center"
@@ -91,12 +92,21 @@ export function About() {
                   </div>
 
                   {/* Content Layer */}
-                  <div className="relative z-10 w-full h-full overflow-y-auto p-4 md:p-8 flex justify-center">
-                    <img
-                      src={cvContent}
-                      alt="CV Sylviane Le Boulc'h"
-                      className="max-w-full h-auto shadow-lg object-contain bg-white/95"
-                    />
+                  <div className="relative z-10 w-full h-full overflow-auto p-4 md:p-8">
+                    {/* Custom Close Button */}
+                    <DialogClose className="absolute right-4 top-4 z-50 p-2 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors backdrop-blur-sm shadow-md cursor-pointer">
+                      <X className="w-6 h-6" />
+                      <span className="sr-only">Fermer</span>
+                    </DialogClose>
+
+                    {/* CV Image Container - Centered but allowing scroll */}
+                    <div className="flex justify-center min-h-full">
+                      <img
+                        src={cvContent}
+                        alt="CV Sylviane Le Boulc'h"
+                        className="w-full md:w-auto md:min-w-[800px] max-w-none shadow-lg object-contain bg-white/95"
+                      />
+                    </div>
                   </div>
                 </DialogContent>
               </Dialog>
