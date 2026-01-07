@@ -8,7 +8,7 @@ const mediums = [
   { label: "Peinture", value: "peinture" },
   { label: "Dessin", value: "dessin" },
   { label: "Sculpture", value: "sculpture" },
-  { label: "Installation", value: "installation" },
+  { label: "Curiosités", value: "curiosity" },
   { label: "Édition", value: "edition" },
 ];
 

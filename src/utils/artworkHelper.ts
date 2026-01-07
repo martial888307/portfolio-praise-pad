@@ -23,7 +23,7 @@ export function detectMedium(artwork: ApiArtwork): string | null {
     // Curiosity (Installation)
     // Rule: contains 'installation'
     if (desc.includes('installation')) {
-        return 'installation';
+        return 'curiosity';
     }
 
     // Drawing

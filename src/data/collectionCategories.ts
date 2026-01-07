@@ -30,6 +30,6 @@ export const CATEGORY_MAPPING: Record<string, string> = {
     "painting": "peinture",
     "drawing": "dessin",
     "sculpture": "sculpture",
-    "curiosity": "installation",
+    "curiosity": "curiosity",
     "edition": "edition"
 };
