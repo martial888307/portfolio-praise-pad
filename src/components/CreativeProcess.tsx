@@ -8,7 +8,7 @@ export function CreativeProcess() {
                 {/* Subsection 1 */}
                 <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                     {/* Content */}
-                    <div className="order-2 lg:order-1 space-y-6">
+                    <div className="space-y-6">
                         <div className="fade-in-up">
                             <span className="font-body uppercase tracking-widest text-sm text-primary">
                                 Processus Créatif
@@ -40,7 +40,7 @@ export function CreativeProcess() {
                     </div>
 
                     {/* Image */}
-                    <div className="fade-in-up order-1 lg:order-2">
+                    <div className="fade-in-up">
                         <div className="relative">
                             <img
                                 src={processArtwork}
@@ -55,19 +55,19 @@ export function CreativeProcess() {
                 {/* Subsection 2 */}
                 <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                     {/* Image */}
-                    <div className="fade-in-up">
+                    <div className="fade-in-up order-2 lg:order-1">
                         <div className="relative">
                             <img
                                 src={processDrawing}
                                 alt="La dentelle humaine - œuvre en cours"
-                                className="w-full shadow-xl"
+                                className="w-full shadow-xl object-cover aspect-[4/3]"
                             />
                             <div className="absolute -top-4 -right-4 w-32 h-32 border-2 border-primary/20 -z-10" />
                         </div>
                     </div>
 
                     {/* Content */}
-                    <div className="space-y-6">
+                    <div className="space-y-6 order-1 lg:order-2">
                         <div className="fade-in-up">
                             <h2 className="font-display text-3xl md:text-4xl mt-4 text-foreground">
                                 La dentelle humaine une palette tout terrain.

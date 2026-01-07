@@ -77,14 +77,14 @@ export function Header() {
         <div
           className={`md:hidden fixed inset-0 z-[100] backdrop-blur-md transition-all duration-500 ease-in-out ${isMobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
             }`}
-          style={{ backgroundColor: "rgba(10, 10, 10, 0.9)" }}
+          style={{ backgroundColor: "rgba(255, 255, 255, 0.95)" }}
         >
           <div className="flex flex-col h-full relative">
             {/* Close Button */}
             <div className="container flex justify-end py-6">
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="p-2 text-cream/80 hover:text-cream transition-colors"
+                className="p-2 text-foreground/80 hover:text-foreground transition-colors"
                 aria-label="Fermer le menu"
               >
                 <X size={32} />
@@ -98,7 +98,7 @@ export function Header() {
                   key={item.href}
                   href={getHref(item.href)}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`font-display text-3xl md:text-4xl text-cream hover:text-bronze-light transition-all duration-300 transform ${isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+                  className={`font-display text-3xl md:text-4xl text-foreground hover:text-primary transition-all duration-300 transform ${isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
                     }`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
@@ -109,7 +109,7 @@ export function Header() {
 
             {/* Decoratif Element */}
             <div className="absolute bottom-10 left-0 right-0 text-center">
-              <span className="font-body text-xs uppercase tracking-[0.2em] text-cream/40">
+              <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground/60">
                 Sylviane Le Boulc'h
               </span>
             </div>

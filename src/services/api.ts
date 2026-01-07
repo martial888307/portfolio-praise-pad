@@ -100,7 +100,7 @@ export async function fetchGalleryData(collectionId: string = "0", medium: strin
                     id: "4",
                     name: "Empreintes",
                     collection_id: "3",
-                    collection_name: "Volume",
+                    collection_name: "Sculpture",
                     dateRealisation: "2021",
                     img_url: "/BDD/ARTWORKS/185/image/card/5f2fe934b7300.JPG"
                 }

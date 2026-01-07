@@ -7,7 +7,7 @@ const mediums = [
   { label: "Tous les matériaux", value: "" },
   { label: "Peinture", value: "peinture" },
   { label: "Dessin", value: "dessin" },
-  { label: "Volume", value: "volume" },
+  { label: "Sculpture", value: "sculpture" },
   { label: "Installation", value: "installation" },
   { label: "Édition", value: "edition" },
 ];
@@ -92,7 +92,7 @@ export function Gallery({ onEnquire }: GalleryProps) {
 
             <div className="w-full md:w-64">
               <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-2 text-center md:text-left">
-                Technique / Medium
+                Medium / Technique
               </label>
               <select
                 value={selectedMedium}
@@ -193,26 +193,17 @@ export function Gallery({ onEnquire }: GalleryProps) {
                         src={getImageUrl(artwork.img_url)}
                         alt={artwork.name}
                         loading="lazy"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-charcoal/0 group-hover:bg-charcoal/40 transition-all duration-500 flex items-end">
-                        <div className="p-6 w-full translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                          <p className="font-body text-xs uppercase tracking-widest text-cream/80 mb-1">
-                            {artwork.collection_name}
-                          </p>
-                          <h3 className="font-display text-xl text-cream">
-                            {artwork.name}
-                          </h3>
-                        </div>
-                      </div>
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
                     </div>
                     <div className="py-4">
+                      <p className="font-body text-xs uppercase tracking-widest text-muted-foreground mb-1">
+                        {artwork.collection_name}
+                      </p>
                       <h3 className="font-display text-lg text-foreground">
                         {artwork.name}
                       </h3>
-                      <p className="font-body text-sm text-muted-foreground">
-                        {artwork.dateRealisation && <span>{artwork.dateRealisation}</span>}
-                      </p>
                     </div>
                   </div>
                 ))}
@@ -321,10 +312,10 @@ export function Gallery({ onEnquire }: GalleryProps) {
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-body text-cream/80">
+                    <div className="flex flex-col gap-1 text-sm font-body text-cream/70">
                       {/* Price / Dimensions */}
                       <div>
-                        <span className="block text-cream/40 text-xs uppercase">Dimensions</span>
+                        {/* Removed label "Dimensions" */}
                         <span>
                           {[
                             artworks[lightboxIndex].width,
@@ -335,7 +326,7 @@ export function Gallery({ onEnquire }: GalleryProps) {
                       </div>
                       {/* Medium */}
                       <div>
-                        <span className="block text-cream/40 text-xs uppercase">Technique</span>
+                        {/* Removed label "Technique" */}
                         <span className="capitalize">
                           {artworks[lightboxIndex].description || artworks[lightboxIndex].collection_name.split(' ')[0]}
                         </span>
@@ -348,7 +339,7 @@ export function Gallery({ onEnquire }: GalleryProps) {
 
                   {/* Action Column */}
                   <div className="w-full md:w-auto flex flex-col gap-4 min-w-[200px]">
-                    <div className="font-display text-2xl text-cream text-right md:text-right">
+                    <div className="font-display text-xl text-cream text-right md:text-right">
                       {/* Price Logic */}
                       {(String(artworks[lightboxIndex].sold) === "1" || Number(artworks[lightboxIndex].sold) === 1) ? (
                         <span className="text-[#FF4444]">Vendu</span>

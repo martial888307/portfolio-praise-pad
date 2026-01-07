@@ -33,9 +33,7 @@ export function About() {
                 À propos
               </span>
               <h2 className="font-display text-3xl md:text-4xl lg:text-5xl mt-4 text-foreground">
-                Une artiste
-                <br />
-                <span className="italic font-normal">de la fragilité</span>
+                Bio
               </h2>
             </div>
 
@@ -79,7 +77,7 @@ export function About() {
                 <DialogTrigger asChild>
                   <button className="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 hover:bg-primary/20 text-primary font-body uppercase tracking-widest text-sm rounded-sm transition-colors">
                     <FileText className="w-4 h-4" />
-                    Voir mon CV
+                    Expositions / CV
                   </button>
                 </DialogTrigger>
                 <DialogContent className="max-w-5xl w-[95vw] h-[90vh] p-0 overflow-hidden border-none bg-transparent shadow-2xl [&>button]:hidden">

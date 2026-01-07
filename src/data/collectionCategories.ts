@@ -29,7 +29,7 @@ export const COLLECTION_CATEGORIES: Record<string, string[]> = {
 export const CATEGORY_MAPPING: Record<string, string> = {
     "painting": "peinture",
     "drawing": "dessin",
-    "sculpture": "volume",
+    "sculpture": "sculpture",
     "curiosity": "installation",
     "edition": "edition"
 };

@@ -18,7 +18,7 @@ export function Approach() {
           La <strong className="text-cream">dentelle</strong>, avec ses ajours et sa transparence, incarne à la fois la puissance du collectif et la vulnérabilité de l'existence. Chaque fil est une <em>ligne de vie</em>, chaque vide un <em>espace de respiration</em>.
         </>
       ),
-      image: approachBalance,
+      image: approachFossil,
       imageAlt: "Équilibre et dentelle",
       reverse: false
     },
@@ -51,7 +51,7 @@ export function Approach() {
           Une interrogation sur ce qui restera de notre inaction, sidérés devant ce que nous avons fait au vivant. <strong className="text-cream">Corps fossilisés</strong>, hébétés, traces du présent conjuguées au passé qui seront trouvées dans l'avenir, nos images ridiculement <em>calcifiées</em> questionnent notre permanence.
         </>
       ),
-      image: approachFossil,
+      image: approachBalance,
       imageAlt: "Fossiles et mémoire",
       reverse: true
     }
@@ -82,7 +82,7 @@ export function Approach() {
             <div key={section.title} className={`fade-in-up`} style={{ animationDelay: `${index * 0.1}s` }}>
               {section.fullWidth ? (
                 <div className="text-center max-w-2xl mx-auto">
-                  <h3 className="font-display text-3xl md:text-4xl text-cream mb-6">{section.title}</h3>
+                  <h3 className="font-display text-4xl md:text-5xl lg:text-6xl text-cream mb-6">{section.title}</h3>
                   <p className="font-body text-xl italic text-cream/90">{section.description}</p>
                 </div>
               ) : (

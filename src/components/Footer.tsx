@@ -46,12 +46,32 @@ export function Footer() {
             <p className="font-body text-sm">
               © {new Date().getFullYear()} Tous droits réservés
             </p>
-            <a
-              href="/mentions-legales"
-              className="font-body text-xs text-cream/40 hover:text-cream transition-colors"
-            >
-              Mentions Légales
-            </a>
+            <div className="flex flex-col md:flex-row gap-2 md:gap-4 items-center">
+              <a
+                href="/mentions-legales"
+                className="font-body text-xs text-cream/40 hover:text-cream transition-colors"
+              >
+                Mentions Légales
+              </a>
+              <span className="hidden md:inline text-cream/20">|</span>
+              <a
+                href="https://tanguymendrisse.fr/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-body text-xs text-cream/40 hover:text-cream transition-colors"
+              >
+                Photos : Tanguy Mendrisse
+              </a>
+              <span className="hidden md:inline text-cream/20">|</span>
+              <a
+                href="https://www.eurekia.io/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-body text-xs text-cream/40 hover:text-cream transition-colors"
+              >
+                Site web : Eurekia
+              </a>
+            </div>
           </div>
         </div>
       </div>

@@ -42,7 +42,7 @@ export function detectMedium(artwork: ApiArtwork): string | null {
     // Rule: contains 'céramique' OR 'résine' OR 'plâtre' OR 'bronze'
     // (Keeping strict rules as requested, can broaden only if user asks again)
     if (desc.includes('céramique') || desc.includes('résine') || desc.includes('plâtre') || desc.includes('bronze')) {
-        return 'volume';
+        return 'sculpture';
     }
 
     // Edition

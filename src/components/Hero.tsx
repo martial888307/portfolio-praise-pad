@@ -26,7 +26,7 @@ export function Hero() {
         </h1>
 
         <p className="hero-text-reveal delay-200 font-body text-lg sm:text-xl md:text-2xl text-cream/80 max-w-2xl mx-auto mb-10 tracking-wide">
-          Artiste plasticienne qui dessine un langage pour dérouler ses récits.
+          Artiste plasticienne, j'aime dessiner un langage pour dérouler mes récits
         </p>
 
         <div className="hero-text-reveal delay-400 flex flex-col sm:flex-row items-center justify-center gap-4">
