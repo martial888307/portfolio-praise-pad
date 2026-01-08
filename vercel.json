@@ -2,7 +2,7 @@
     "rewrites": [
         {
             "source": "/api_sylviane/:path*",
-            "destination": "https://www.sylvianeleboulch.com/:path*"
+            "destination": "http://sylvianep.cluster013.ovh.net/:path*"
         },
         {
             "source": "/(.*)",

@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
     proxy: {
       '/api_sylviane': {
-        target: 'https://www.sylvianeleboulch.com',
+        target: 'http://sylvianep.cluster013.ovh.net',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api_sylviane/, ''),
       },

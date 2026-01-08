@@ -52,7 +52,7 @@ export function Gallery({ onEnquire }: GalleryProps) {
   const getImageUrl = (path: string) => {
     if (path.startsWith("http")) return path;
     if (path.includes("placeholder")) return path;
-    return `https://www.sylvianeleboulch.com${path}`;
+    return `http://sylvianep.cluster013.ovh.net${path}`;
   };
 
   return (
