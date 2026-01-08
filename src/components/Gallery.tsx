@@ -4,7 +4,7 @@ import { useGallery } from "../hooks/useGallery";
 
 // Fixed list from documentation
 const mediums = [
-  { label: "Tous les matériaux", value: "" },
+  { label: "Tous les médiums bien sûr", value: "" },
   { label: "Peinture", value: "peinture" },
   { label: "Dessin", value: "dessin" },
   { label: "Sculpture", value: "sculpture" },
@@ -304,7 +304,7 @@ export function Gallery({ onEnquire }: GalleryProps) {
                   {/* Infos Oeuvre */}
                   <div className="space-y-4 flex-1">
                     <div>
-                      <h3 className="font-display text-3xl text-cream mb-1">
+                      <h3 className="font-display text-xl text-cream mb-1">
                         {artworks[lightboxIndex].name}
                       </h3>
                       <p className="font-body text-cream/60 text-sm uppercase tracking-wider">
