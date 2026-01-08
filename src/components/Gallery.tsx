@@ -4,7 +4,7 @@ import { useGallery } from "../hooks/useGallery";
 
 // Fixed list from documentation
 const mediums = [
-  { label: "Tous les médiums bien sûr", value: "" },
+  { label: "Tous les médiums", value: "" },
   { label: "Peinture", value: "peinture" },
   { label: "Dessin", value: "dessin" },
   { label: "Sculpture", value: "sculpture" },
