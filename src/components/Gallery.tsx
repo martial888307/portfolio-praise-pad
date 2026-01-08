@@ -52,7 +52,8 @@ export function Gallery({ onEnquire }: GalleryProps) {
   const getImageUrl = (path: string) => {
     if (path.startsWith("http")) return path;
     if (path.includes("placeholder")) return path;
-    return `http://sylvianep.cluster013.ovh.net${path}`;
+    // Proxy through /api_sylviane to avoid mixed content issues on HTTPS
+    return `/api_sylviane${path}`;
   };
 
   return (
