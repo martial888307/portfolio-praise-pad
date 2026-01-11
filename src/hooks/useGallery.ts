@@ -1,12 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { fetchGalleryData, fetchCollections, ApiArtwork, ApiCollection } from "../services/api";
-import { detectMedium } from "../utils/artworkHelper";
-import { COLLECTION_CATEGORIES, CATEGORY_MAPPING } from "../data/collectionCategories";
 
 export interface Collection {
     id: string;
     name: string;
     description?: string;
+}
+
+/**
+ * Extrait les médiums uniques à partir d'une liste d'œuvres.
+ * Utilise le champ `medium` de l'API s'il existe.
+ */
+function extractUniqueMediums(artworks: ApiArtwork[]): string[] {
+    const mediumsSet = new Set<string>();
+
+    artworks.forEach(artwork => {
+        if (artwork.technique) {
+            // Normaliser en lowercase pour éviter les doublons
+            mediumsSet.add(artwork.technique.toLowerCase());
+        }
+    });
+
+    return Array.from(mediumsSet);
 }
 
 export function useGallery() {
@@ -17,6 +32,12 @@ export function useGallery() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [availableMediums, setAvailableMediums] = useState<string[]>([]);
+
+    // Cache des œuvres de la collection sélectionnée
+    const [collectionArtworksCache, setCollectionArtworksCache] = useState<ApiArtwork[]>([]);
+
+    // Ref pour éviter les appels multiples pendant le chargement
+    const loadingCollectionRef = useRef<string | null>(null);
 
     // Initial load for collections
     useEffect(() => {
@@ -39,59 +60,55 @@ export function useGallery() {
         loadCollections();
     }, []);
 
-    // Handle Collection Change & Auto-selection
+    // Charger les œuvres de la collection et extraire les médiums
     useEffect(() => {
+        // Reset si pas de collection sélectionnée
         if (!selectedCollectionId) {
             setAvailableMediums([]);
             setSelectedMedium("");
             setArtworks([]);
+            setCollectionArtworksCache([]);
             return;
         }
 
-        // Get static categories for this collection
-        const rawCategories = COLLECTION_CATEGORIES[selectedCollectionId] || [];
-        // Map to French values
-        const mappedCategories = rawCategories.map(cat => CATEGORY_MAPPING[cat]).filter(Boolean);
-
-        setAvailableMediums(mappedCategories);
-
-        // Auto-select the first available medium
-        if (mappedCategories.length > 0) {
-            setSelectedMedium(mappedCategories[0]);
-        } else {
-            setSelectedMedium("");
+        // Éviter les appels multiples pour la même collection
+        if (loadingCollectionRef.current === selectedCollectionId) {
+            return;
         }
-    }, [selectedCollectionId]);
 
-    // Data Loading & Filtering
-    useEffect(() => {
-        // Only load if we have a collection selected
-        if (!selectedCollectionId) return;
-
-        async function loadData() {
+        async function loadCollectionData() {
+            loadingCollectionRef.current = selectedCollectionId;
             setLoading(true);
             setError(null);
+
             try {
-                const colId = selectedCollectionId || "0";
-                // Pass empty string for medium to fetch everything for the collection
-                const data = await fetchGalleryData(colId, "");
+                // Récupérer toutes les œuvres de la collection (sans filtre medium)
+                const data = await fetchGalleryData(selectedCollectionId, "");
 
-
-                if (data && data.artworks) {
+                if (data?.artworks) {
                     const loadedArtworks = data.artworks;
 
-                    // Filter for display based on the selected medium
-                    // Use the helper to detect medium for each artwork
-                    if (selectedMedium) {
-                        const filtered = loadedArtworks.filter(art => detectMedium(art) === selectedMedium);
-                        setArtworks(filtered);
+                    // Mettre en cache les œuvres
+                    setCollectionArtworksCache(loadedArtworks);
+
+                    // Extraire les médiums uniques depuis le champ medium de l'API
+                    const uniqueMediums = extractUniqueMediums(loadedArtworks);
+                    console.log("[useGallery] Médiums extraits:", uniqueMediums);
+
+                    setAvailableMediums(uniqueMediums);
+
+                    // Auto-sélectionner le premier medium s'il y en a
+                    if (uniqueMediums.length > 0) {
+                        setSelectedMedium(uniqueMediums[0]);
                     } else {
-                        // Keep strict: if no medium is selected (shouldn't happen with auto-select unless empty), show all?
-                        // Or show nothing? User said "auto-select first".
-                        // Let's show all if for some reason no medium is selected but collection is.
+                        // Si aucun medium trouvé, montrer toutes les œuvres
+                        setSelectedMedium("");
                         setArtworks(loadedArtworks);
                     }
                 } else {
+                    setCollectionArtworksCache([]);
+                    setAvailableMediums([]);
+                    setSelectedMedium("");
                     setArtworks([]);
                 }
             } catch (err: any) {
@@ -100,11 +117,31 @@ export function useGallery() {
                 setArtworks([]);
             } finally {
                 setLoading(false);
+                loadingCollectionRef.current = null;
             }
         }
 
-        loadData();
-    }, [selectedCollectionId, selectedMedium]);
+        loadCollectionData();
+    }, [selectedCollectionId]);
+
+    // Filtrage local des œuvres par medium (depuis le cache)
+    useEffect(() => {
+        // Ne rien faire si pas de collection ou si chargement en cours
+        if (!selectedCollectionId || collectionArtworksCache.length === 0) {
+            return;
+        }
+
+        if (selectedMedium) {
+            // Filtrer depuis le cache
+            const filtered = collectionArtworksCache.filter(
+                art => art.technique?.toLowerCase() === selectedMedium.toLowerCase()
+            );
+            setArtworks(filtered);
+        } else {
+            // Montrer toutes les œuvres du cache
+            setArtworks(collectionArtworksCache);
+        }
+    }, [selectedMedium, collectionArtworksCache]);
 
     return {
         artworks,

@@ -2,15 +2,15 @@ import { useState } from "react";
 import { X, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { useGallery } from "../hooks/useGallery";
 
-// Fixed list from documentation
-const mediums = [
-  { label: "Tous les médiums", value: "" },
-  { label: "Peinture", value: "peinture" },
-  { label: "Dessin", value: "dessin" },
-  { label: "Sculpture", value: "sculpture" },
-  { label: "Curiosités", value: "curiosity" },
-  { label: "Édition", value: "edition" },
-];
+// Mapping des valeurs API vers les labels d'affichage
+const MEDIUM_LABELS: Record<string, string> = {
+  "peinture": "Peinture",
+  "dessin": "Dessin",
+  "sculpture": "Sculpture",
+  "curiosity": "Curiosités",
+  "edition": "Édition",
+};
+
 
 interface GalleryProps {
   onEnquire?: (message: string) => void;
@@ -100,13 +100,12 @@ export function Gallery({ onEnquire }: GalleryProps) {
                 onChange={(e) => setSelectedMedium(e.target.value)}
                 className="w-full h-10 px-3 py-2 text-sm rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring"
               >
-                {mediums
-                  .filter(m => m.value === "" || availableMediums.includes(m.value))
-                  .map((med) => (
-                    <option key={med.value} value={med.value}>
-                      {med.label}
-                    </option>
-                  ))}
+                <option value="">Tous les médiums</option>
+                {availableMediums.map((med) => (
+                  <option key={med} value={med}>
+                    {MEDIUM_LABELS[med] || med}
+                  </option>
+                ))}
               </select>
             </div>
 

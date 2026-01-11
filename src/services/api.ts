@@ -6,6 +6,7 @@ export interface ApiArtwork {
     dateRealisation: string;
     img_url: string;
     description?: string;
+    technique?: string;  // Champ renvoyé par l'API
     price?: string | number;
     visiblePrice?: string;
     sold?: string | number;
