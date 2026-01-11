@@ -255,10 +255,10 @@ export function Gallery({ onEnquire }: GalleryProps) {
               e.stopPropagation();
               navigateLightbox("prev");
             }}
-            className="hidden md:block absolute left-4 md:left-8 text-cream/70 hover:text-cream transition-colors z-50 p-2"
+            className="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 text-cream/80 hover:text-cream transition-colors z-50 p-2 bg-black/40 md:bg-transparent rounded-full"
             aria-label="Précédent"
           >
-            <ChevronLeft size={40} />
+            <ChevronLeft size={32} className="md:w-10 md:h-10" />
           </button>
 
           <button
@@ -266,10 +266,10 @@ export function Gallery({ onEnquire }: GalleryProps) {
               e.stopPropagation();
               navigateLightbox("next");
             }}
-            className="hidden md:block absolute right-4 md:right-8 text-cream/70 hover:text-cream transition-colors z-50 p-2"
+            className="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 text-cream/80 hover:text-cream transition-colors z-50 p-2 bg-black/40 md:bg-transparent rounded-full"
             aria-label="Suivant"
           >
-            <ChevronRight size={40} />
+            <ChevronRight size={32} className="md:w-10 md:h-10" />
           </button>
 
           {/* Container Scrollable */}
@@ -291,10 +291,6 @@ export function Gallery({ onEnquire }: GalleryProps) {
                   alt={artworks[lightboxIndex].name}
                   className="max-w-full max-h-[70vh] w-auto object-contain"
                 />
-
-                {/* Mobile Navigation overlay on image sides */}
-                <div className="md:hidden absolute inset-y-0 left-0 w-1/4 pointer-events-auto" onClick={() => navigateLightbox("prev")} />
-                <div className="md:hidden absolute inset-y-0 right-0 w-1/4 pointer-events-auto" onClick={() => navigateLightbox("next")} />
               </div>
 
               {/* Details Section */}
