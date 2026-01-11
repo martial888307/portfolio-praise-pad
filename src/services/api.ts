@@ -116,6 +116,7 @@ export interface ApiCollection {
     id: string;
     name: string;
     description?: string;
+    order?: number;
 }
 
 export async function fetchCollections(): Promise<ApiCollection[]> {
@@ -138,7 +139,8 @@ export async function fetchCollections(): Promise<ApiCollection[]> {
                 return data.collections.map((col: any) => ({
                     id: col.collection_id,
                     name: col.name,
-                    description: col.description || ""
+                    description: col.description || "",
+                    order: parseInt(col.order, 10) || 999
                 }));
             } else {
                 console.error("API returned unexpected structure for collections:", data);

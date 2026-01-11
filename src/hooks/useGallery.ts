@@ -5,6 +5,7 @@ export interface Collection {
     id: string;
     name: string;
     description?: string;
+    order?: number;
 }
 
 /**
@@ -47,10 +48,11 @@ export function useGallery() {
                 const mappedCols = apiCols.map((c: ApiCollection) => ({
                     id: c.id,
                     name: c.name,
-                    description: c.description
+                    description: c.description,
+                    order: c.order
                 }));
-                // Sort by name
-                mappedCols.sort((a, b) => a.name.localeCompare(b.name));
+                // Sort by API order
+                mappedCols.sort((a, b) => (a.order || 999) - (b.order || 999));
                 setCollections(mappedCols);
             } catch (err) {
                 console.error("Failed to load collections", err);
