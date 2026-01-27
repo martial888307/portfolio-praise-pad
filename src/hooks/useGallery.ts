@@ -71,25 +71,15 @@ export function useGallery() {
         loadInitialData();
     }, []);
 
-    // Handler pour changement de collection
-    // Reset le médium SEULEMENT si on CHANGE de collection (pas quand on ajoute pour la première fois)
+    // Handler pour changement de collection (pas de reset automatique)
     const handleCollectionChange = useCallback((collectionId: string) => {
-        // Si on avait déjà une collection et qu'on change → reset médium
-        if (selectedCollectionId && collectionId !== selectedCollectionId) {
-            setSelectedMedium("");
-        }
         setSelectedCollectionId(collectionId);
-    }, [selectedCollectionId]);
+    }, []);
 
-    // Handler pour changement de médium
-    // Reset la collection SEULEMENT si on CHANGE de médium (pas quand on ajoute pour la première fois)
+    // Handler pour changement de médium (pas de reset automatique)
     const handleMediumChange = useCallback((medium: string) => {
-        // Si on avait déjà un médium et qu'on change → reset collection
-        if (selectedMedium && medium !== selectedMedium) {
-            setSelectedCollectionId("");
-        }
         setSelectedMedium(medium);
-    }, [selectedMedium]);
+    }, []);
 
     // Collections filtrées : si médium sélectionné, ne montrer que les collections qui ont ce médium
     const availableCollections = useMemo(() => {
