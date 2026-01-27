@@ -195,7 +195,7 @@ export function Gallery({ onEnquire }: GalleryProps) {
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
                     </div>
                     <div className="py-4">
-                      <p className="font-body text-xs uppercase tracking-widest text-muted-foreground mb-1">
+                      <p className="font-body text-xs tracking-widest text-muted-foreground mb-1">
                         {artwork.collection_name}
                       </p>
                       <h3 className="font-display text-lg text-foreground">
@@ -300,7 +300,7 @@ export function Gallery({ onEnquire }: GalleryProps) {
                       <h3 className="font-display text-xl text-cream mb-1">
                         {artworks[lightboxIndex].name}
                       </h3>
-                      <p className="font-body text-cream/60 text-sm uppercase tracking-wider">
+                      <p className="font-body text-cream/60 text-sm tracking-wider">
                         {artworks[lightboxIndex].collection_name}
                       </p>
                     </div>
