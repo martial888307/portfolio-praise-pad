@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { fetchGalleryData, fetchCollections, ApiArtwork, ApiCollection } from "../services/api";
 
 export interface Collection {
@@ -10,18 +10,14 @@ export interface Collection {
 
 /**
  * Extrait les médiums uniques à partir d'une liste d'œuvres.
- * Utilise le champ `technique` de l'API s'il existe.
  */
 function extractUniqueMediums(artworks: ApiArtwork[]): string[] {
     const mediumsSet = new Set<string>();
-
     artworks.forEach(artwork => {
         if (artwork.technique) {
-            // Normaliser en lowercase pour éviter les doublons
             mediumsSet.add(artwork.technique.toLowerCase());
         }
     });
-
     return Array.from(mediumsSet);
 }
 
@@ -29,28 +25,26 @@ export function useGallery() {
     const [collections, setCollections] = useState<Collection[]>([]);
     const [selectedCollectionId, setSelectedCollectionId] = useState<string>("");
     const [selectedMedium, setSelectedMedium] = useState<string>("");
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // Cache de TOUTES les œuvres (pour filtrage global et liste exhaustive des médiums)
+    // Cache de TOUTES les œuvres
     const [allArtworksCache, setAllArtworksCache] = useState<ApiArtwork[]>([]);
     const [allMediums, setAllMediums] = useState<string[]>([]);
     const [initialLoading, setInitialLoading] = useState(true);
 
-    // Initial load: collections + ALL artworks (for exhaustive medium list)
+    // Initial load: collections + ALL artworks
     useEffect(() => {
         async function loadInitialData() {
             setInitialLoading(true);
             setError(null);
 
             try {
-                // Charger collections et toutes les œuvres en parallèle
                 const [apiCols, allArtworksData] = await Promise.all([
                     fetchCollections(),
-                    fetchGalleryData("0", "") // collection_id=0 = toutes les œuvres
+                    fetchGalleryData("0", "")
                 ]);
 
-                // Mapper et trier les collections
+                // Mapper et trier les collections par ordre
                 const mappedCols = apiCols.map((c: ApiCollection) => ({
                     id: c.id,
                     name: c.name,
@@ -60,11 +54,10 @@ export function useGallery() {
                 mappedCols.sort((a, b) => (a.order || 999) - (b.order || 999));
                 setCollections(mappedCols);
 
-                // Stocker toutes les œuvres et extraire les médiums
                 if (allArtworksData?.artworks) {
                     setAllArtworksCache(allArtworksData.artworks);
                     const uniqueMediums = extractUniqueMediums(allArtworksData.artworks);
-                    console.log("[useGallery] Tous les médiums disponibles:", uniqueMediums);
+                    console.log("[useGallery] Tous les médiums:", uniqueMediums);
                     setAllMediums(uniqueMediums);
                 }
             } catch (err: any) {
@@ -78,53 +71,89 @@ export function useGallery() {
         loadInitialData();
     }, []);
 
-    // Calcul des médiums disponibles selon le contexte
-    const availableMediums = useMemo(() => {
-        if (selectedCollectionId) {
-            // Si une collection est sélectionnée, montrer uniquement les médiums de cette collection
-            const collectionArtworks = allArtworksCache.filter(
-                art => art.collection_id === selectedCollectionId
-            );
-            return extractUniqueMediums(collectionArtworks);
+    // Handler pour changement de collection
+    // Reset le médium SEULEMENT si on CHANGE de collection (pas quand on ajoute pour la première fois)
+    const handleCollectionChange = useCallback((collectionId: string) => {
+        // Si on avait déjà une collection et qu'on change → reset médium
+        if (selectedCollectionId && collectionId !== selectedCollectionId) {
+            setSelectedMedium("");
         }
-        // Sinon, montrer tous les médiums disponibles
-        return allMediums;
+        setSelectedCollectionId(collectionId);
+    }, [selectedCollectionId]);
+
+    // Handler pour changement de médium
+    // Reset la collection SEULEMENT si on CHANGE de médium (pas quand on ajoute pour la première fois)
+    const handleMediumChange = useCallback((medium: string) => {
+        // Si on avait déjà un médium et qu'on change → reset collection
+        if (selectedMedium && medium !== selectedMedium) {
+            setSelectedCollectionId("");
+        }
+        setSelectedMedium(medium);
+    }, [selectedMedium]);
+
+    // Collections filtrées : si médium sélectionné, ne montrer que les collections qui ont ce médium
+    const availableCollections = useMemo(() => {
+        if (!selectedMedium) return collections;
+
+        const collectionIds = new Set(
+            allArtworksCache
+                .filter(art => art.technique?.toLowerCase() === selectedMedium.toLowerCase())
+                .map(art => art.collection_id)
+        );
+        return collections.filter(c => collectionIds.has(c.id));
+    }, [selectedMedium, allArtworksCache, collections]);
+
+    // Médiums filtrés : si collection sélectionnée, ne montrer que les médiums de cette collection
+    const availableMediums = useMemo(() => {
+        if (!selectedCollectionId) return allMediums;
+
+        const collectionArtworks = allArtworksCache.filter(
+            art => art.collection_id === selectedCollectionId
+        );
+        return extractUniqueMediums(collectionArtworks);
     }, [selectedCollectionId, allArtworksCache, allMediums]);
 
-    // Filtrage des œuvres selon les critères sélectionnés
+    // Filtrage et tri des œuvres
     const artworks = useMemo(() => {
+        // Si rien n'est sélectionné, pas d'œuvres (placeholder)
+        if (!selectedCollectionId && !selectedMedium) {
+            return [];
+        }
+
         let filtered = allArtworksCache;
 
-        // Filtre par collection (si sélectionnée)
+        // Filtre par collection
         if (selectedCollectionId) {
             filtered = filtered.filter(art => art.collection_id === selectedCollectionId);
         }
 
-        // Filtre par médium (si sélectionné)
+        // Filtre par médium
         if (selectedMedium) {
             filtered = filtered.filter(art =>
                 art.technique?.toLowerCase() === selectedMedium.toLowerCase()
             );
         }
 
-        return filtered;
-    }, [allArtworksCache, selectedCollectionId, selectedMedium]);
+        // Tri par ordre de collection (utiliser l'ordre du backoffice)
+        const collectionOrderMap = new Map(collections.map(c => [c.id, c.order || 999]));
+        filtered.sort((a, b) => {
+            const orderA = collectionOrderMap.get(a.collection_id) || 999;
+            const orderB = collectionOrderMap.get(b.collection_id) || 999;
+            return orderA - orderB;
+        });
 
-    // Reset du médium si le médium sélectionné n'est plus disponible
-    useEffect(() => {
-        if (selectedMedium && !availableMediums.includes(selectedMedium)) {
-            setSelectedMedium("");
-        }
-    }, [availableMediums, selectedMedium]);
+        return filtered;
+    }, [allArtworksCache, selectedCollectionId, selectedMedium, collections]);
 
     return {
         artworks,
         collections,
+        availableCollections,
         selectedCollectionId,
-        setSelectedCollectionId,
+        handleCollectionChange,
         selectedMedium,
-        setSelectedMedium,
-        loading: initialLoading || loading,
+        handleMediumChange,
+        loading: initialLoading,
         error,
         availableMediums,
     };
