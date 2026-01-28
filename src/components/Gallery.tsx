@@ -124,7 +124,7 @@ export function Gallery({ onEnquire }: GalleryProps) {
         {/* ... existing code ... */}
         {selectedCollectionId && collections.find(c => c.id === selectedCollectionId)?.description && (
           <div key={selectedCollectionId} className="max-w-3xl mx-auto mb-16 px-4 text-center overflow-hidden">
-            <p className="font-display italic tracking-tight text-lg md:text-xl text-primary/80 leading-relaxed animate-slide-up">
+            <p className="font-body italic tracking-tight text-lg md:text-xl text-primary/80 leading-relaxed animate-slide-up">
               {collections.find(c => c.id === selectedCollectionId)?.description || ""}
             </p>
           </div>
